@@ -1,18 +1,15 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Roboto_Mono } from "next/font/google";
-import "./globals.css";
-import { SITE, TITLE } from "@/constants/seo";
+import type { Metadata } from 'next';
+import { IBM_Plex_Sans } from 'next/font/google';
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  preload: true,
-});
+import './globals.css';
 
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  variable: "--font-roboto-mono",
+import { SITE, TITLE } from '@/constants/seo';
+
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ['400', '500', '600', '700'],
   preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'sans-serif'],
 });
 
 export const metadata: Metadata = {
@@ -26,12 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${spaceGrotesk.variable} ${robotoMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang='en'>
+      <body className={`${ibmPlexSans.className} antialiased`}>{children}</body>
     </html>
   );
 }
