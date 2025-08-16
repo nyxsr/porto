@@ -17,13 +17,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       id: 'new-chat',
       title: 'New Chat',
       icon: 'PenBox',
-      path: '/dashboard',
-    },
-    {
-      id: 'search-chat',
-      title: 'Search Chat',
-      icon: 'Search',
-      path: '/search',
+      path: '/',
     },
   ],
   [

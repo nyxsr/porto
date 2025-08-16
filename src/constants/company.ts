@@ -26,41 +26,47 @@ export const COMPANY_PROJECTS: CompanyProjects = {
     {
       id: 'genexis',
       title: 'Genexis',
-      path: '/projects/genexis',
+      path: '/chat/genexis',
     },
     {
       id: 'digilend',
       title: 'Digilend',
-      path: '/projects/digilend',
+      path: '/chat/digilend',
     },
     {
       id: 'bridev',
       title: 'BRIDev',
-      path: '/projects/bridev',
+      path: '/chat/bridev',
     },
   ],
   'reacteev-id': [
     {
       id: 'premium-portal',
       title: 'Premium Portal',
-      path: '/projects/premium-portal',
+      path: '/chat/premium-portal',
     },
     {
       id: 'tutoria-id',
       title: 'Tutoria ID',
-      path: '/projects/tutoria-id',
+      path: '/chat/tutoria-id',
     },
   ],
   fotolaku: [
     {
       id: 'fotolaku-business-enterprise',
       title: 'Fotolaku Business Enterprise',
-      path: '/projects/fotolaku-business-enterprise',
+      path: '/chat/fotolaku-business-enterprise',
     },
     {
       id: 'siap-jadi-brand',
       title: 'Siap Jadi Brand - Fotolaku Landing Page',
-      path: '/projects/landing-page-fotolaku',
+      path: '/chat/landing-page-fotolaku',
     },
   ],
+};
+
+export const companyBg: Record<CompanyIds, string> = {
+  'feedloop-ai': 'bg-feedloop-primary text-black',
+  'reacteev-id': 'bg-reacteev-primary text-black',
+  fotolaku: 'bg-fotolaku-primary text-black',
 };

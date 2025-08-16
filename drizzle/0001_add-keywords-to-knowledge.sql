@@ -1,0 +1,1 @@
+ALTER TABLE "knowledge" ADD COLUMN "keywords" text[] DEFAULT ARRAY[]::text[];

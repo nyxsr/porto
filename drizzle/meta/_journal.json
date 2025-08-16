@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1754958340166,
+      "tag": "0000_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754958921547,
+      "tag": "0001_add-keywords-to-knowledge",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754959104412,
+      "tag": "0002_modify-all-created-at-to-use-default-now",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1754960860731,
+      "tag": "0003_add-meta-and-embedding-to-knowledge",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1754967331907,
+      "tag": "0004_modify-convo-table",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1754971033027,
+      "tag": "0005_add-unique-to-slug-knowledge",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1755249755601,
+      "tag": "0006_remove-mode-in-convo",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1755283549236,
+      "tag": "0007_add-index-to-convo",
+      "breakpoints": true
+    }
+  ]
+}

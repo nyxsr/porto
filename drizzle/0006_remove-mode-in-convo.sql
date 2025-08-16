@@ -1,0 +1,1 @@
+ALTER TABLE "convo" DROP COLUMN "mode";

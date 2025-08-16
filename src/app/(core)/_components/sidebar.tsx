@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { COMPANY_PROJECTS, CompanyIds } from '@/constants/company';
 import { SIDEBAR_ITEMS, SidebarItem, SidebarItemBase } from '@/constants/sidebar';
 import { useCompanyStore } from '@/store/company.store';
+import { useSidebarStore } from '@/store/sidebar.store';
 import { Button } from '@/components/ui/button';
 
 function isSingleItem(item: SidebarItem): item is SidebarItemBase {
@@ -21,7 +22,9 @@ function isSingleItem(item: SidebarItem): item is SidebarItemBase {
 function SidebarMenuItem({ item, level = 0 }: { item: SidebarItemBase; level?: number }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const Icon = item.icon ? (Icons[item.icon] as React.ComponentType<{ className?: string }>) : null;
+  const MotionIcon = Icon ? motion.create(Icon) : null;
   const hasChildren = item.children && item.children.length > 0;
+  const isCollapsed = useSidebarStore((state) => state.isCollapsed);
 
   const handleClick = (e: React.MouseEvent) => {
     if (hasChildren && !item.isDisabled) {
@@ -37,16 +40,33 @@ function SidebarMenuItem({ item, level = 0 }: { item: SidebarItemBase; level?: n
         href={item.isDisabled || hasChildren ? '#' : item.path}
         onClick={handleClick}
         className={cn(
-          'hover:bg-primary/10 mx-3 flex items-center rounded-md p-2',
+          'hover:bg-primary/10 mx-3 flex items-center rounded-md p-2 text-sm',
           level > 0 && 'ml-5',
           item.isDisabled && 'cursor-not-allowed opacity-50',
         )}
       >
         <div className='flex flex-1 items-center'>
-          {Icon && <Icon className='size-5' />}
-          <span className='ml-2'>{item.title}</span>
+          {MotionIcon && (
+            <MotionIcon
+              initial={{ width: 18, height: 18 }}
+              animate={{ width: 18, height: 18 }}
+              exit={{ width: 18, height: 18 }}
+            />
+          )}
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.2 } }}
+                exit={{ opacity: 0 }}
+                className='ml-2'
+              >
+                {item.title}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
-        {hasChildren && (
+        {hasChildren && !isCollapsed && (
           <motion.div
             className='ml-auto'
             animate={{ rotate: isExpanded ? 90 : 0 }}
@@ -86,19 +106,35 @@ function SidebarMenuItem({ item, level = 0 }: { item: SidebarItemBase; level?: n
 
 export default function Sidebar() {
   const company = useCompanyStore((state) => state.company);
+  const isCollapsed = useSidebarStore((state) => state.isCollapsed);
+  const setIsCollapsed = useSidebarStore((state) => state.setIsCollapsed);
 
   const companyProjects = React.useMemo<SidebarItem[]>(
     () => (company ? (COMPANY_PROJECTS[company as CompanyIds] ?? []) : []),
     [company],
   );
 
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <motion.aside className='sidebar'>
+    <motion.aside
+      className='sidebar'
+      initial={{ width: '4rem' }}
+      animate={{ width: isCollapsed ? '4rem' : '15rem' }}
+    >
       <span className='mb-4 flex items-center justify-between'>
         <Image alt='logo' src={Logo} height={60} width={60} />
-        <Button variant='link' className='cursor-pointer opacity-50 hover:opacity-100'>
-          <Columns2 className='size-5' />
-        </Button>
+        {!isCollapsed && (
+          <Button
+            onClick={toggleSidebar}
+            variant='link'
+            className='cursor-pointer opacity-50 hover:opacity-100'
+          >
+            <Columns2 className='size-5' />
+          </Button>
+        )}
       </span>
 
       {SIDEBAR_ITEMS.map((item, index) => {
@@ -110,8 +146,8 @@ export default function Sidebar() {
                   const customSub: SidebarItemBase = {
                     id: 'sahrul-project',
                     title: 'My Project',
-                    path: '/projects',
-                    children: companyProjects, // <- memoized
+                    path: '/chat',
+                    children: companyProjects,
                   };
                   return <SidebarMenuItem key={subItem.id} item={customSub} />;
                 }

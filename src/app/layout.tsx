@@ -3,6 +3,8 @@ import { IBM_Plex_Sans } from 'next/font/google';
 
 import './globals.css';
 
+import Providers from '@/providers';
+
 import { SITE, TITLE } from '@/constants/seo';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -24,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${ibmPlexSans.className} antialiased`}>{children}</body>
+      <body className={`${ibmPlexSans.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

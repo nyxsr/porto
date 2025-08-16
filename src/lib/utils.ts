@@ -44,3 +44,7 @@ export function flattenChildren(children?: SidebarItem[]): SidebarItemBase[] {
 export function dedupeById<T extends WithId>(arr: T[]): T[] {
   return Array.from(new Map(arr.map((x) => [x.id, x])).values());
 }
+
+export const scrollToBottom = (containerRef: HTMLDivElement) => {
+  containerRef.scrollTop = containerRef.scrollHeight;
+};

@@ -1,0 +1,1 @@
+ALTER TABLE "knowledge" ADD CONSTRAINT "knowledge_slug_unique" UNIQUE("slug");
