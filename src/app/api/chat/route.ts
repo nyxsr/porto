@@ -4,7 +4,12 @@ import { convo, type Convo } from '@/db/schemas/convo';
 import { asc, eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 
-import { detectIntroductionInquiry, detectSkillsInquiry } from '@/lib/chat-utils';
+import {
+  detectIntroductionInquiry,
+  detectResumeInquiry,
+  detectSkillsInquiry,
+  detectSummaryInquiry,
+} from '@/lib/chat-utils';
 import { embedBatch } from '@/lib/embedding';
 import { openai } from '@/lib/openai';
 import { searchByEmbedding, type KBHit } from '@/lib/retrieve';
@@ -18,7 +23,7 @@ function buildSystemInstruction(allowFallback: boolean): string {
     `You are Sahrul's friendly assistant that will introduce Sahrul to users.`,
     'Your target audience is HR managers and people who want to know about Sahrul.',
     'Answer using ONLY the Knowledge Context below.',
-    'If the context contains relevant information, provide a complete answer and append [source: <meta.source>] for specific passages.',
+    'If the context contains relevant information, provide a complete answer.',
     allowFallback
       ? 'If any document allows general fallback, you MAY add general knowledge—but prefer the context.'
       : 'Do NOT use outside knowledge for factual claims about Sahrul.',
@@ -112,6 +117,8 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         // Check if user is asking about Introduction
         const isIntroductionInquiry = detectIntroductionInquiry(last.content);
         const isSkills = detectSkillsInquiry(last.content);
+        const isSummary = detectSummaryInquiry(last.content);
+        const isResume = detectResumeInquiry(last.content);
 
         // Send introduction event immediately if detected
         if (isIntroductionInquiry) {
@@ -156,6 +163,17 @@ export const GET = async (req: NextRequest): Promise<Response> => {
           })),
         ];
 
+        if (isResume || isSummary) {
+          // Remove 1st index and 2nd index of messages
+          messages.splice(1, 2);
+          messages.push({
+            role: 'system',
+            content: `
+            Say to the user that they can download the resume in link above politely and friendly with emoji.
+            `,
+          });
+        }
+
         send('session', { sessionId: sid });
 
         // 4) Stream model response
@@ -194,6 +212,12 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         }
         if (isSkills) {
           types.push('SKILLS');
+        }
+        if (isSummary) {
+          types.push('SUMMARY');
+        }
+        if (isResume) {
+          types.push('RESUME');
         }
         if (types.length > 0) {
           assistantMeta.type = types;

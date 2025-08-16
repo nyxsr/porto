@@ -4,6 +4,12 @@ import { convo, type Convo } from '@/db/schemas/convo';
 import { asc, eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 
+import {
+  detectIntroductionInquiry,
+  detectResumeInquiry,
+  detectSkillsInquiry,
+  detectSummaryInquiry,
+} from '@/lib/chat-utils';
 import { embedBatch } from '@/lib/embedding';
 import { openai } from '@/lib/openai';
 import { searchByEmbedding, type KBHit } from '@/lib/retrieve';
@@ -17,7 +23,7 @@ function buildSystemInstruction(allowFallback: boolean): string {
     `You are Sahrul's friendly assistant that will introduce Sahrul to users.`,
     'Your target audience is HR managers and people who want to know about Sahrul.',
     'Answer using ONLY the Knowledge Context below.',
-    'If the context contains relevant information, provide a complete answer and append [source: <meta.source>] for specific passages.',
+    'If the context contains relevant information, provide a complete answer.',
     allowFallback
       ? 'If any document allows general fallback, you MAY add general knowledge—but prefer the context.'
       : 'Do NOT use outside knowledge for factual claims about Sahrul.',
@@ -42,55 +48,6 @@ function buildKnowledgeContext(
   return docs
     .map((d) => `### ${d.title} (slug: ${d.slug})\n${d.content.trim()}`)
     .join('\n\n---\n\n');
-}
-
-// Function to detect if user is asking about Sahrul Ramdan
-function detectIntroductionInquiry(content: string): boolean {
-  const normalizedContent = content.toLowerCase();
-  const patterns = ['who is sahrul', 'about sahrul', 'tell me about sahrul', 'introduce sahrul'];
-
-  return patterns.some((pattern) => normalizedContent.includes(pattern));
-}
-
-// Function to detect if user is asking about skills
-function detectSkillsInquiry(content: string): boolean {
-  const normalizedContent = content.toLowerCase();
-
-  const patterns = [
-    // Direct skill questions
-    'what are your skills',
-    'tell me your skills',
-    'your skills',
-    'skills list',
-    'show skills',
-    'skillset',
-
-    // Capability / expertise
-    'what can you do',
-    'what do you do',
-    'what are you capable of',
-    'what are your abilities',
-    'what are your strengths',
-    'can you do',
-    'things you can do',
-
-    // Expertise / specialization
-    'what is your expertise',
-    'your expertise',
-    'your specialties',
-    'what are you specialized in',
-    'what are you good at',
-    'areas of expertise',
-    'technical expertise',
-
-    // Informal / shorthand
-    'skills?',
-    'expertise?',
-    'capabilities?',
-    'abilities?',
-  ];
-
-  return patterns.some((pattern) => normalizedContent.includes(pattern));
 }
 
 export const GET = async (req: NextRequest): Promise<Response> => {
@@ -134,6 +91,8 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         // Check if user is asking about Sahrul Ramdan
         const isSahrulInquiry = detectIntroductionInquiry(last.content);
         const isSkillInquiry = detectSkillsInquiry(last.content);
+        const isSummary = detectSummaryInquiry(last.content);
+        const isResume = detectResumeInquiry(last.content);
 
         // Send introduction event immediately if detected
         if (isSahrulInquiry) {
@@ -211,6 +170,12 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         }
         if (isSkillInquiry) {
           types.push('SKILLS');
+        }
+        if (isResume) {
+          types.push('RESUME');
+        }
+        if (isSummary) {
+          types.push('SUMMARY');
         }
         if (types.length > 0) {
           assistantMeta.type = types.length === 1 ? types[0] : types;

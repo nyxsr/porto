@@ -26,7 +26,7 @@ export async function searchByEmbedding(
   queryEmbedding: number[],
   opts: Options = {},
 ): Promise<KBHit[]> {
-  const { k = 5, minScore = 0.15, lang, requireTags, setProbes } = opts;
+  const { k = 5, minScore = 0.15, lang, requireTags } = opts;
 
   // Build a proper vector literal once (no sql.raw needed);
   // We pass the array as JSON and cast in SQL to vector.

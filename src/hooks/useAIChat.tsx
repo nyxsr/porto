@@ -1,7 +1,7 @@
 import React from 'react';
 import { Convo } from '@/db/schemas/convo';
 
-export type MessageType = 'INTRODUCE' | 'SKILLS';
+export type MessageType = 'INTRODUCE' | 'SKILLS' | 'RESUME' | 'SUMMARY';
 
 export type MessageMeta = {
   type?: MessageType[];

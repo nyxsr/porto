@@ -57,6 +57,20 @@
       "when": 1755283549236,
       "tag": "0007_add-index-to-convo",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1755363570152,
+      "tag": "0008_index-for-knowledge",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1755363683027,
+      "tag": "0009_additional-index-for-knowledge",
+      "breakpoints": true
     }
   ]
 }

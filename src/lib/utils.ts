@@ -48,3 +48,15 @@ export function dedupeById<T extends WithId>(arr: T[]): T[] {
 export const scrollToBottom = (containerRef: HTMLDivElement) => {
   containerRef.scrollTop = containerRef.scrollHeight;
 };
+
+export function weightedPick<T>(items: readonly T[], decay = 0.55): T {
+  // weight[i] = e^(-i * decay) gives exponentially decreasing probability by index
+  const weights = items.map((_, i) => Math.exp(-i * decay));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < items.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return items[i];
+  }
+  return items[0];
+}

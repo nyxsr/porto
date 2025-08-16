@@ -73,7 +73,7 @@ export default function CorePage() {
             </form>
             <div className='flex items-center gap-2'>
               {isProcessing && <LoadingDots />}
-              <button onClick={getRandomQuestion} className='px-4'>
+              <button onClick={getRandomQuestion} className='cursor-pointer px-4'>
                 <Dices />
               </button>
             </div>

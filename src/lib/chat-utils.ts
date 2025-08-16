@@ -9,6 +9,8 @@ interface LanguagePatterns {
   introPatterns: string[];
   negativePatterns: RegExp[];
   listIntents: RegExp[];
+  resumePatterns: RegExp[];
+  summaryPatterns: RegExp[];
 }
 
 // Language-specific patterns
@@ -58,6 +60,23 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
       /\b(list|show|enumerate|outline|detail)\b.*\b(skills?|skill[-\s]?set|abilities)\b/,
       /\b(skills?|skill[-\s]?set|abilities)\b.*\b(list|show|enumerate|outline|detail)\b/,
     ],
+    resumePatterns: [
+      // direct nouns
+      /\b(resume|cv|curriculum\s+vitae|portfolio|bio|profile)\b/,
+      // actions around resume
+      /\b(view|see|show|open|download|share|send|attach|link|provide|give|upload|fetch)\b.*\b(resume|cv|curriculum\s+vitae|portfolio|profile)\b/,
+      /\b(resume|cv|curriculum\s+vitae|portfolio|profile)\b.*\b(link|url|pdf|file|doc|version|copy)\b/,
+      // possession / about Sahrul
+      /\b(sahrul|his|your)\b.*\b(resume|cv|curriculum\s+vitae|portfolio|profile)\b/,
+      /\b(resume|cv|curriculum\s+vitae)\b.*\b(of|for)\b.*\b(sahrul|him|you)\b/,
+      // freshness
+      /\b(updated|latest|newest|recent)\b.*\b(resume|cv)\b/,
+      /\b(resume|cv)\b.*\b(updated|latest|newest|recent)\b/,
+    ],
+    summaryPatterns: [
+      /\b(summary|overview|synopsis|abstract|recap|digest|tl;dr|tldr|brief|short version|in a nutshell)\b/,
+      /\b(summariz(e|e)|summaris(e|e)|sum\s*up|condense|boil\s*down|give\s+me\s+the\s+gist)\b/,
+    ],
   },
 
   id: {
@@ -106,6 +125,19 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
       /\b(daftar(kan)?|tampilkan|sebutkan|uraikan)\b.*\b(skill|keahlian|kemampuan)\b/,
       /\b(skill|keahlian|kemampuan)\b.*\b(daftar(kan)?|tampilkan|sebutkan|uraikan)\b/,
     ],
+    resumePatterns: [
+      /\b(resume|cv|curriculum\s+vitae|profil|portofolio)\b/,
+      /\b(lihat|tampilkan|perlihatkan|buka|unduh|download|bagikan|kirim|lampirkan|tautkan|berikan)\b.*\b(resume|cv|curriculum\s+vitae|profil|portofolio)\b/,
+      /\b(resume|cv|profil|portofolio)\b.*\b(tautan|link|pdf|berkas|file|versi|salinan)\b/,
+      /\b(resume|cv|profil|portofolio)\b.*\b(sahrul)\b|\\b(sahrul)\b.*\b(resume|cv|profil|portofolio)\b/,
+      /\b(terbaru|terkini|terupdate|paling\s+baru)\b.*\b(resume|cv)\b/,
+      /\b(resume|cv)\b.*\b(terbaru|terkini|terupdate|paling\s+baru)\b/,
+    ],
+    summaryPatterns: [
+      /\b(ringkas|diringkas|ringkasan|rangkuman|simpulkan|kesimpulan|intisari|versi\s+singkat)\b/,
+      // NOTE: "resume" in Indonesian often means summary; we’ll disambiguate in code
+      /\b(resume)\b/,
+    ],
   },
 
   es: {
@@ -137,6 +169,17 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
     listIntents: [
       /\b(listar|mostrar|enumerar)\b.*\bhabilidades\b/,
       /\bhabilidades\b.*\b(listar|mostrar|enumerar)\b/,
+    ],
+    resumePatterns: [
+      /\b(curr[ií]culum\s*(vitae)?|cv|perfil|portafolio|hoja\s+de\s+vida)\b/,
+      /\b(ver|mostrar|abrir|descargar|compartir|enviar|adjuntar|vincular|proveer|dar)\b.*\b(curr[ií]culum|cv|perfil|portafolio|hoja\s+de\s+vida)\b/,
+      /\b(curr[ií]culum|cv|perfil|portafolio)\b.*\b(enlace|link|pdf|archivo|versi[oó]n|copia)\b/,
+      /\b(sahrul|su|t[uú])\b.*\b(curr[ií]culum|cv|perfil|portafolio|hoja\s+de\s+vida)\b/,
+      /\b(actualizado|reciente|[úu]ltimo)\b.*\b(curr[ií]culum|cv)\b/,
+      /\b(curr[ií]culum|cv)\b.*\b(actualizado|reciente|[úu]ltimo)\b/,
+    ],
+    summaryPatterns: [
+      /\b(resumen|resumir|sintesis|sinopsis|vision\s+general|en\s+breve|version\s+corta)\b/,
     ],
   },
 
@@ -174,6 +217,17 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
       /\b(lister|montrer|enumerer)\b.*\bcompetences\b/,
       /\bcompetences\b.*\b(lister|montrer|enumerer)\b/,
     ],
+    resumePatterns: [
+      /\b(cv|curriculum\s+vitae|profil|portfolio|dossier)\b/,
+      /\b(voir|montrer|ouvrir|t[eé]l[eé]charger|partager|envoyer|joindre|lier|fournir|donner)\b.*\b(cv|curriculum\s+vitae|profil|portfolio|dossier)\b/,
+      /\b(cv|profil|portfolio)\b.*\b(lien|pdf|fichier|version|copie)\b/,
+      /\b(sahrul|son|ton|votre)\b.*\b(cv|profil|portfolio)\b/,
+      /\b(mis\s+à\s+jour|r[eé]cent|dernier|derni[eè]re)\b.*\b(cv)\b/,
+      /\b(cv)\b.*\b(mis\s+à\s+jour|r[eé]cent|dernier|derni[eè]re)\b/,
+    ],
+    summaryPatterns: [
+      /\b(resume|re?sume|synthese|synopsis|aper[u|cu]|vue\s+densemble|en\s+bref|version\s+courte)\b/,
+    ],
   },
 
   de: {
@@ -205,6 +259,17 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
     listIntents: [
       /\b(auflisten|zeigen|aufzahlen)\b.*\bfahigkeiten\b/,
       /\bfahigkeiten\b.*\b(auflisten|zeigen|aufzahlen)\b/,
+    ],
+    resumePatterns: [
+      /\b(lebenslauf|cv|profil|portfolio|werdegang)\b/,
+      /\b(ansehen|zeigen|[öo]ffnen|herunterladen|teilen|senden|anh[aä]ngen|verlinken|bereitstellen|geben)\b.*\b(lebenslauf|cv|profil|portfolio|werdegang)\b/,
+      /\b(lebenslauf|cv|profil|portfolio)\b.*\b(link|pdf|datei|version|kopie)\b/,
+      /\b(sahrul|sein|dein|ihr)\b.*\b(lebenslauf|cv|profil|portfolio)\b/,
+      /\b(aktualisiert|neueste|j[üu]ngste|aktuell)\b.*\b(lebenslauf|cv)\b/,
+      /\b(lebenslauf|cv)\b.*\b(aktualisiert|neueste|j[üu]ngste|aktuell)\b/,
+    ],
+    summaryPatterns: [
+      /\b(zusammenfassung|kurzfassung|kurzuebersicht|kurzfassung|ueberblick|überblick|kurz\s+und\s+knapp)\b/,
     ],
   },
 
@@ -238,6 +303,17 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
       /\b(listar|mostrar|enumerar)\b.*\bhabilidades\b/,
       /\bhabilidades\b.*\b(listar|mostrar|enumerar)\b/,
     ],
+    resumePatterns: [
+      /\b(curr[ií]culo|cv|perfil|portf[oó]lio)\b/,
+      /\b(ver|mostrar|abrir|baixar|download|compartilhar|enviar|anexar|vincular|fornecer|dar)\b.*\b(curr[ií]culo|cv|perfil|portf[oó]lio)\b/,
+      /\b(curr[ií]culo|cv|perfil|portf[oó]lio)\b.*\b(link|liga[cç][aã]o|pdf|arquivo|vers[aã]o|c[oó]pia)\b/,
+      /\b(sahrul|seu|sua|dele|dela|teu|tua)\b.*\b(curr[ií]culo|cv|perfil|portf[oó]lio)\b/,
+      /\b(atualizado|mais\s+recente|[uú]ltimo)\b.*\b(curr[ií]culo|cv)\b/,
+      /\b(curr[ií]culo|cv)\b.*\b(atualizado|mais\s+recente|[uú]ltimo)\b/,
+    ],
+    summaryPatterns: [
+      /\b(resumo|resumir|sinopse|vis[aã]o\s+geral|em\s+poucas\s+palavras|vers[aã]o\s+curta)\b/,
+    ],
   },
 
   ja: {
@@ -248,6 +324,15 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
     introPatterns: ['サフルルとは誰', 'サフルルについて', 'サフルルを紹介', 'あなたは誰'],
     negativePatterns: [/いい(スキル|技能)/, /上手/, /得意/],
     listIntents: [/(リスト|一覧).*スキル/, /スキル.*(リスト|一覧)/],
+    resumePatterns: [
+      /(履歴書|職務経歴書|プロフィール|ポートフォリオ|CV)/,
+      /(見せて|表示|開いて|ダウンロード|共有|送って|添付|リンク|提供|ください).*(履歴書|職務経歴書|プロフィール|ポートフォリオ|CV)/,
+      /(履歴書|職務経歴書|プロフィール|ポートフォリオ|CV).*(リンク|PDF|ファイル|最新版|更新版|コピー)/,
+      /(サフルル|あなた|彼).*(履歴書|職務経歴書|プロフィール|ポートフォリオ|CV)/,
+      /(最新|更新).*(履歴書|職務経歴書|CV)/,
+      /(履歴書|職務経歴書|CV).*(最新|更新)/,
+    ],
+    summaryPatterns: [/(要約|概要|まとめ|ダイジェスト|簡潔|短く|要点|概要を教えて)/, /tl;?dr/i],
   },
 
   ko: {
@@ -258,6 +343,15 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
     introPatterns: ['사흘룰은 누구', '사흘룰에 대해', '사흘룰 소개', '당신은 누구'],
     negativePatterns: [/좋은\s*(스킬|기술)/, /잘하/, /뛰어나/],
     listIntents: [/(목록|리스트).*스킬/, /스킬.*(목록|리스트)/],
+    resumePatterns: [
+      /(이력서|경력기술서|프로필|포트폴리오|CV)/,
+      /(보여줘|보기|열기|다운로드|공유|보내|첨부|링크|제공).*(이력서|경력기술서|프로필|포트폴리오|CV)/,
+      /(이력서|경력기술서|프로필|포트폴리오|CV).*(링크|pdf|파일|버전|사본)/,
+      /(사흘룰|당신|그).*(이력서|경력기술서|프로필|포트폴리오|CV)/,
+      /(최신|업데이트|최근).*(이력서|CV)/,
+      /(이력서|CV).*(최신|업데이트|최근)/,
+    ],
+    summaryPatterns: [/(요약|개요|한줄\s*요약|간단히|핵심만|요점)/, /tl;?dr/i],
   },
 
   zh: {
@@ -268,6 +362,15 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePatterns> = {
     introPatterns: ['萨鲁尔是谁', '关于萨鲁尔', '介绍萨鲁尔', '你是谁'],
     negativePatterns: [/很好的(技能|能力)/, /擅长/, /厉害/],
     listIntents: [/(列表|清单).*技能/, /技能.*(列表|清单)/],
+    resumePatterns: [
+      /(简历|履历|个人简介|个人资料|作品集|档案|CV)/,
+      /(查看|看看|显示|打开|下载|分享|发送|附上|链接|提供).*(简历|履历|个人简介|作品集|CV)/,
+      /(简历|履历|个人简介|作品集|CV).*(链接|PDF|文件|版本|副本)/,
+      /(萨鲁尔|你|他|您).*(简历|履历|个人简介|作品集|CV)/,
+      /(最新|更新|最近).*(简历|CV)/,
+      /(简历|CV).*(最新|更新|最近)/,
+    ],
+    summaryPatterns: [/(摘要|概要|概述|总?結|总?结|简述|简要|要点|简明)/, /tl;?dr/i],
   },
 };
 
@@ -307,24 +410,13 @@ export function detectLanguage(content: string): string {
   return detectedLang && languageScores[detectedLang] > 0 ? detectedLang : 'en';
 }
 
-// Multi-language introduction inquiry detector
 export function detectIntroductionInquiry(content: string): boolean {
   const normalized = normalize(content);
   const language = detectLanguage(content);
+  const patterns = LANGUAGE_PATTERNS[language]?.introPatterns || LANGUAGE_PATTERNS.en.introPatterns;
 
-  const patterns =
-    LANGUAGE_PATTERNS[language]?.introPatterns ||
-    LANGUAGE_PATTERNS.en.introPatterns ||
-    LANGUAGE_PATTERNS.id.introPatterns ||
-    LANGUAGE_PATTERNS.es.introPatterns ||
-    LANGUAGE_PATTERNS.fr.introPatterns ||
-    LANGUAGE_PATTERNS.de.introPatterns ||
-    LANGUAGE_PATTERNS.ja.introPatterns ||
-    LANGUAGE_PATTERNS.zh.introPatterns ||
-    LANGUAGE_PATTERNS.ko.introPatterns ||
-    LANGUAGE_PATTERNS.pt.introPatterns;
-
-  return patterns.some((pattern) => normalized.includes(pattern));
+  // introPatterns is string[]; match by substring
+  return patterns.some((phrase) => normalized.includes(phrase));
 }
 
 // Enhanced multi-language skills inquiry detector
@@ -368,6 +460,76 @@ export function detectSkillsInquiry(content: string, threshold = 3): boolean {
   if (patterns.listIntents.some((pattern) => pattern.test(normalized))) {
     score += 1;
   }
+
+  return score >= threshold;
+}
+
+export function detectSummaryInquiry(content: string, threshold = 2): boolean {
+  if (!content) return false;
+
+  const normalized = normalize(content);
+  const language = detectLanguage(content);
+  const patterns = LANGUAGE_PATTERNS[language] || LANGUAGE_PATTERNS.en;
+
+  // --- Indonesian disambiguation ---
+  // In Indonesian, "resume" commonly means "summary".
+  // If user says "resume" WITHOUT clear CV cues, treat it as summary.
+  let idResumeAsSummary = false;
+  if (language === 'id' && /\bresume\b/.test(normalized)) {
+    const cvCues =
+      /\b(cv|curriculum\s+vitae|portofolio|profil|lamaran|pekerjaan|pdf|file|berkas|tautan|link)\b/;
+    idResumeAsSummary = !cvCues.test(normalized);
+  }
+
+  let score = 0;
+
+  // Must contain at least one explicit summary indicator OR the ID special case above
+  if (idResumeAsSummary || patterns.summaryPatterns.some((re) => re.test(normalized))) {
+    score += 2;
+  } else {
+    return false;
+  }
+
+  // Asking verbs help but aren’t required
+  if (patterns.askVerbs.some((re) => re.test(normalized))) score += 1;
+
+  // Referencing subject (you/Sahrul/his) adds confidence
+  if (patterns.subjectTerms.some((re) => re.test(normalized))) score += 1;
+
+  // Interrogative form (question marks / question words) adds a bit
+  if (patterns.interrogatives.some((re) => re.test(normalized))) score += 1;
+
+  return score >= threshold;
+}
+
+export function detectResumeInquiry(content: string, threshold = 3): boolean {
+  if (!content) return false;
+
+  const normalized = normalize(content);
+  const language = detectLanguage(content);
+  const patterns = LANGUAGE_PATTERNS[language] || LANGUAGE_PATTERNS.en;
+
+  // In Indonesian, plain "resume" is usually summary. Require CV cues.
+  if (language === 'id' && /\bresume\b/.test(normalized)) {
+    const cvCues =
+      /\b(cv|curriculum\s+vitae|portofolio|profil|lamaran|pekerjaan|pdf|file|berkas|tautan|link)\b/;
+    if (!cvCues.test(normalized)) return false;
+  }
+
+  // Early exit for negative patterns (keeps symmetry with skills)
+  if (patterns.negativePatterns.some((re) => re.test(normalized))) {
+    return false;
+  }
+
+  let score = 0;
+
+  if (patterns.resumePatterns.some((re) => re.test(normalized))) score += 2;
+  else return false;
+
+  if (patterns.askVerbs.some((re) => re.test(normalized))) score += 2;
+  if (patterns.subjectTerms.some((re) => re.test(normalized))) score += 1;
+  if (patterns.interrogatives.some((re) => re.test(normalized))) score += 1;
+  if (patterns.listIntents.some((re) => re.test(normalized))) score += 1;
 
   return score >= threshold;
 }
