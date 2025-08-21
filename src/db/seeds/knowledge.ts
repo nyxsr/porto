@@ -1,5 +1,112 @@
 import { KnowledgeInsert } from '../schemas/knowledge';
 
+export const feedloopKnowledge: KnowledgeInsert[] = [
+  {
+    title: 'About Feedloop',
+    slug: 'about-feedloop',
+    content: `Feedloop AI is a technology company based in Jakarta, DKI Jakarta, Indonesia.
+It empowers businesses with **Generative AI-driven process automation**, enabling organizations to innovate faster, operate smarter, and gain a competitive edge in rapidly evolving markets.
+
+Feedloop AI specializes in delivering enterprise-ready solutions across multiple areas:
+- **Software as a Service (SaaS)**
+- **Generative AI & Agentic AI**
+- **Enterprise AI Solutions**
+- **AI-Powered Data Analysis**
+- **AI-Based Automation**
+- **Conversational AI & Virtual Assistants**
+- **AI Integration & APIs**
+- **Image Analysis**
+- **Document Analysis**
+
+The company focuses on helping businesses integrate advanced AI into their workflows, driving both operational efficiency and innovation at scale.`,
+    keywords: [
+      'feedloop',
+      'feedloop ai',
+      'generative ai',
+      'agentic ai',
+      'enterprise ai',
+      'process automation',
+      'jakarta',
+      'indonesia',
+    ],
+    meta: {
+      lang: 'en',
+      source: 'Feedloop AI Knowledge',
+      tags: ['feedloop-ai', 'company', 'ai', 'enterprise'],
+      version: 1,
+      allowGeneralFallback: true,
+    },
+  },
+];
+
+export const reacteevKnowledge: KnowledgeInsert[] = [
+  {
+    title: 'About Reacteev ID',
+    slug: 'about-reacteev-id',
+    content: `Reacteev ID is a small-to-medium software house based in Gedebage, Bandung.
+The company focuses on building digital products that deliver practical and cost-effective solutions for users and businesses.
+
+One of its flagship products is **PremiumPortal** — a subscription platform that provides access to more than 50 popular premium apps, including Netflix, ChatGPT, Disney+, and others, under a single account.
+With affordable monthly fees starting at just Rp49,000, PremiumPortal allows users to enjoy entertainment, productivity, and educational services without subscribing to each service individually.
+
+The project leverages a **Chrome extension** to enable one-click access to all premium apps. Development emphasizes:
+- Seamless integration of multiple services
+- Secure subscription payment systems
+- Strong account security measures
+- A user-friendly and consistent experience
+
+**Business goals** of PremiumPortal include:
+- Increasing subscribers at low acquisition cost
+- Improving retention through convenience and affordability
+- Strengthening its position as an accessible and user-friendly premium subscription solution.`,
+    keywords: [
+      'reacteev',
+      'reacteev id',
+      'premiumportal',
+      'subscription platform',
+      'bandung',
+      'gedebage',
+      'chrome extension',
+      'digital products',
+    ],
+    meta: {
+      lang: 'en',
+      source: 'Reacteev ID Knowledge',
+      tags: ['reacteev', 'company', 'software-house', 'subscription'],
+      version: 1,
+      allowGeneralFallback: true,
+    },
+  },
+];
+
+export const fotolakuKnowledge: KnowledgeInsert[] = [
+  {
+    title: 'About Fotolaku',
+    slug: 'about-fotolaku',
+    content: `Fotolaku is a photography and videography company based in Tangerang Selatan, Indonesia.
+Its mission is captured in the tagline: *"We're here to give solutions for every online business to have high quality product photography that's affordable, efficient, and innovative."*
+
+Fotolaku focuses on helping **MSMEs, online businesses, and local brands** that require professional product photos and videos at an affordable cost.
+The company provides a streamlined process designed to make product photography **accessible, efficient, and innovative**, enabling small and medium-sized businesses to elevate their brand presentation and compete in the digital marketplace.`,
+    keywords: [
+      'fotolaku',
+      'product photography',
+      'videography',
+      'tangerang selatan',
+      'msme',
+      'online business',
+      'local brand',
+    ],
+    meta: {
+      lang: 'en',
+      source: 'Fotolaku Knowledge',
+      tags: ['fotolaku', 'company', 'photography', 'videography', 'msme'],
+      version: 1,
+      allowGeneralFallback: true,
+    },
+  },
+];
+
 export const knowledgeSeeds: KnowledgeInsert[] = [
   {
     title: 'About Sahrul Ramdan',
@@ -240,4 +347,7 @@ export const knowledgeSeeds: KnowledgeInsert[] = [
       allowGeneralFallback: true,
     },
   },
+  ...feedloopKnowledge,
+  ...reacteevKnowledge,
+  ...fotolakuKnowledge,
 ];

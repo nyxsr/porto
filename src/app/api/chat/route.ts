@@ -13,14 +13,20 @@ import {
 import { embedBatch } from '@/lib/embedding';
 import { openai } from '@/lib/openai';
 import { searchByEmbedding, type KBHit } from '@/lib/retrieve';
+import { CompanyIds, COMPANIES } from '@/constants/company';
 
 export const runtime = 'edge';
 
 const MODEL = 'gpt-4o-mini';
 
-function buildSystemInstruction(allowFallback: boolean): string {
+function buildSystemInstruction(allowFallback: boolean, company?: CompanyIds): string {
+  const companyName = company ? COMPANIES.find(c => c.id === company)?.name : undefined;
+  const contextualIntro = companyName 
+    ? `You are introducing Sahrul in the context of ${companyName}.`
+    : `You are Sahrul's friendly assistant that will introduce Sahrul to users.`;
+
   return [
-    `You are Sahrul's friendly assistant that will introduce Sahrul to users.`,
+    contextualIntro,
     'Your target audience is HR managers and people who want to know about Sahrul.',
     'Answer using ONLY the Knowledge Context below.',
     'If the context contains relevant information, provide a complete answer.',
@@ -52,7 +58,7 @@ function buildKnowledgeContext(
 
 export const POST = async (req: NextRequest): Promise<Response> => {
   const body = await req.json();
-  const { sid, message } = body;
+  const { sid, message, company } = body;
 
   if (!sid || !message) {
     return new Response(JSON.stringify({ error: 'Missing sid or message' }), {
@@ -69,9 +75,12 @@ export const POST = async (req: NextRequest): Promise<Response> => {
     meta: {},
   });
 
-  // Now stream the assistant response - create a new request with sessionId in query params
+  // Now stream the assistant response - create a new request with sessionId and company in query params
   const url = new URL(req.url);
   url.searchParams.set('sessionId', sid);
+  if (company) {
+    url.searchParams.set('company', company);
+  }
   const streamReq = new NextRequest(url.toString());
   return GET(streamReq);
 };
@@ -79,6 +88,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 export const GET = async (req: NextRequest): Promise<Response> => {
   const { searchParams } = new URL(req.url);
   const sid = searchParams.get('sessionId') ?? nanoid();
+  const company = searchParams.get('company') as CompanyIds | null;
 
   const headers = new Headers({
     'Content-Type': 'text/event-stream',
@@ -155,7 +165,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 
         // 3) Build messages
         const messages: { role: 'system' | 'user' | 'assistant'; content: string }[] = [
-          { role: 'system', content: buildSystemInstruction(allowFallback) },
+          { role: 'system', content: buildSystemInstruction(allowFallback, company || undefined) },
           { role: 'system', content: `# Knowledge Context\n${knowledgeBlock}` },
           ...history.map((m) => ({
             role: m.role as 'system' | 'user' | 'assistant',

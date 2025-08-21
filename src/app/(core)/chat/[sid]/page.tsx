@@ -9,6 +9,7 @@ import useAIChat, { Message } from '@/hooks/useAIChat';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { useChatStreaming } from '@/hooks/useChatStreaming';
 import { useSpecialMessageTypes } from '@/hooks/useSpecialMessageTypes';
+import { useCompanyStore } from '@/store/company.store';
 
 import ChatError from '../_components/chat-error';
 import ChatInput from '../_components/chat-input';
@@ -26,6 +27,7 @@ export default function ChatPage() {
   const { disconnect } = useAIChat({ sid, onComplete: () => refetch() });
   const messageSectionRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { company } = useCompanyStore();
 
   const {
     showIntroduction,
@@ -41,6 +43,7 @@ export default function ChatPage() {
   const { isStreaming, isProcessing, streamingDraft, processLabel, sendMessage } = useChatStreaming(
     {
       sid,
+      company,
       setMessages,
       refetch,
       messageSectionRef,

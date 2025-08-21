@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import BlurredMask from './_components/blurred-mask';
-import CompanySelector from './_components/company-selector';
+// import CompanySelector from './_components/company-selector';
 import { LoadingDots } from './_components/loading-dots';
 import OrbsLayer from './_components/orbs-layer';
 import SocialMedias from './_components/social-medias';
@@ -51,8 +51,8 @@ export default function CorePage() {
       <OrbsLayer colors={colors} />
       <BlurredMask />
       <div className='relative z-30 h-full'>
-        <div className='sticky top-0 left-0 flex items-center justify-between'>
-          <CompanySelector />
+        <div className='sticky top-0 left-0 flex items-center justify-end'>
+          {/*<CompanySelector />*/}
           <SocialMedias />
         </div>
         <div className='mx-auto flex h-full max-w-[70%] flex-col items-center justify-center gap-4'>

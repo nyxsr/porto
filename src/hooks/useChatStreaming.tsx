@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { scrollToBottom, weightedPick } from '@/lib/utils';
 import { PROCESS_LABELS } from '@/constants/chat';
 import { Message, MessageType } from '@/hooks/useAIChat';
+import { CompanyIds } from '@/constants/company';
 
 export interface ChatStreamingState {
   isStreaming: boolean;
@@ -25,6 +26,7 @@ export interface ChatStreamingActions {
 
 interface UseChatStreamingProps {
   sid: string;
+  company?: CompanyIds;
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   refetch: () => void;
   messageSectionRef: React.RefObject<HTMLDivElement | null>;
@@ -33,6 +35,7 @@ interface UseChatStreamingProps {
 
 export function useChatStreaming({
   sid,
+  company,
   setMessages,
   refetch,
   messageSectionRef,
@@ -70,7 +73,7 @@ export function useChatStreaming({
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sid, message: text }),
+          body: JSON.stringify({ sid, message: text, company }),
         });
 
         if (response.ok && response.body) {
@@ -169,7 +172,7 @@ export function useChatStreaming({
         setIsProcessing(false);
       }
     },
-    [sid, refetch, setMessages, messageSectionRef, inputRef],
+    [sid, company, refetch, setMessages, messageSectionRef, inputRef],
   );
 
   // Handle process label animation
