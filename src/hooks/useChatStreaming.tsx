@@ -45,6 +45,30 @@ export function useChatStreaming({
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [streamingDraft, setStreamingDraft] = React.useState('');
   const [processLabel, setProcessLabel] = React.useState<string>(PROCESS_LABELS[0]);
+  const [shouldAutoScroll, setShouldAutoScroll] = React.useState(true);
+
+  // Check if user is near bottom of scroll container
+  const isNearBottom = React.useCallback((element: HTMLElement, threshold = 100) => {
+    const scrollHeight = element.scrollHeight;
+    const scrollTop = element.scrollTop;
+    const clientHeight = element.clientHeight;
+    return scrollHeight - scrollTop - clientHeight <= threshold;
+  }, []);
+
+  // Update auto-scroll state when user manually scrolls
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (messageSectionRef.current) {
+        setShouldAutoScroll(isNearBottom(messageSectionRef.current));
+      }
+    };
+
+    const element = messageSectionRef.current;
+    if (element) {
+      element.addEventListener('scroll', handleScroll);
+      return () => element.removeEventListener('scroll', handleScroll);
+    }
+  }, [messageSectionRef, isNearBottom]);
 
   const sendMessage = React.useCallback(
     async (text: string, options: ChatStreamingOptions = {}) => {
@@ -62,10 +86,11 @@ export function useChatStreaming({
       setIsProcessing(true);
       setStreamingDraft('');
 
-      // Scroll after user message is added
+      // Scroll after user message is added (always scroll for new user messages)
       setTimeout(() => {
         if (messageSectionRef.current) {
           scrollToBottom(messageSectionRef.current);
+          setShouldAutoScroll(true); // Reset auto-scroll when user sends a message
         }
       }, 100);
 
@@ -110,8 +135,8 @@ export function useChatStreaming({
                     if (data.type === 'chunk') {
                       fullDraft += data.content;
                       setStreamingDraft(fullDraft);
-                      // Auto-scroll during streaming
-                      if (messageSectionRef.current) {
+                      // Auto-scroll during streaming only if user is near bottom
+                      if (messageSectionRef.current && shouldAutoScroll) {
                         scrollToBottom(messageSectionRef.current);
                       }
                     } else if (data.type === 'complete') {
@@ -134,9 +159,9 @@ export function useChatStreaming({
                       // Clear draft and streaming state
                       setStreamingDraft('');
                       setIsStreaming(false);
-                      // Scroll after message is complete
+                      // Scroll after message is complete only if user is near bottom
                       setTimeout(() => {
-                        if (messageSectionRef.current) {
+                        if (messageSectionRef.current && shouldAutoScroll) {
                           scrollToBottom(messageSectionRef.current);
                         }
                       }, 100);
@@ -172,7 +197,7 @@ export function useChatStreaming({
         setIsProcessing(false);
       }
     },
-    [sid, company, refetch, setMessages, messageSectionRef, inputRef],
+    [sid, company, refetch, setMessages, messageSectionRef, inputRef, shouldAutoScroll],
   );
 
   // Handle process label animation
