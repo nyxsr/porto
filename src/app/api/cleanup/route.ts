@@ -6,8 +6,11 @@ import { inArray, lt } from 'drizzle-orm';
 export const runtime = 'edge';
 
 function isAuthorized(req: Request) {
-  const header = req.headers.get('x-cron-key');
-  return header && header === process.env.CRON_SECRET;
+  const authHeader = req.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return false;
+  }
+  return true;
 }
 
 export async function GET(request: Request) {
