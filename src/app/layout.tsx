@@ -4,6 +4,7 @@ import { IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 
 import Providers from '@/providers';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { SITE, TITLE } from '@/constants/seo';
 
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${ibmPlexSans.className} antialiased`}>
         <Providers>{children}</Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
