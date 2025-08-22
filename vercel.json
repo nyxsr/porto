@@ -2,7 +2,10 @@
   "crons": [
     {
       "path": "/api/cleanup",
-      "schedule": "0 0 * * *"
+      "schedule": "0 0 * * *",
+      "headers": {
+        "x-cron-key": "${CRON_SECRET}"
+      }
     }
   ]
 }
