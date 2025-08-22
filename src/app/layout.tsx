@@ -9,7 +9,7 @@ import { SITE, TITLE } from '@/constants/seo';
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600', '700'],
-  preload: true,
+  subsets: ['latin', 'latin-ext'],
   adjustFontFallback: true,
   fallback: ['system-ui', 'sans-serif'],
 });
