@@ -7,6 +7,7 @@ export default function SocialMedias() {
     <div className='flex items-center gap-3'>
       {SOCIAL_MEDIA.map((social) => (
         <Link
+          aria-label={social.label}
           key={social.id}
           href={social.url}
           className='text-gray-300 transition-all hover:text-gray-700'

@@ -82,6 +82,7 @@ export default function CorePage() {
           >
             <form onSubmit={(e) => handleSubmit(e)} className='w-full'>
               <Input
+                aria-label='Ask anything about me...'
                 ref={inputRef}
                 disabled={isProcessing}
                 value={input}
@@ -92,10 +93,15 @@ export default function CorePage() {
             </form>
             <div className='flex items-center gap-2'>
               {isProcessing && <LoadingDots />}
-              <button onClick={getRandomQuestion} className='cursor-pointer px-2'>
+              <button
+                aria-label='Random Question'
+                onClick={getRandomQuestion}
+                className='cursor-pointer px-2'
+              >
                 <Dices />
               </button>
               <Button
+                aria-label='Submit'
                 type='submit'
                 disabled={isProcessing}
                 className={cn('rounded-full text-black', isProcessing && 'bg-gray-500')}

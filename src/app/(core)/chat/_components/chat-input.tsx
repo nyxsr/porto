@@ -52,10 +52,16 @@ export default function ChatInput({
             />
             <div className='flex items-center gap-2'>
               {isProcessing && <LoadingDots />}
-              <button type='button' onClick={getRandomQuestion} className='cursor-pointer px-2'>
+              <button
+                aria-label='Random Question'
+                type='button'
+                onClick={getRandomQuestion}
+                className='cursor-pointer px-2'
+              >
                 <Dices />
               </button>
               <Button
+                aria-label='Submit'
                 type='submit'
                 disabled={isProcessing}
                 className={cn('rounded-full text-black', isProcessing && 'bg-gray-500')}

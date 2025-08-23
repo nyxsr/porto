@@ -6,6 +6,7 @@ type SocialMedia = {
   name: string;
   url: string;
   icon: React.ReactNode;
+  label: string;
 };
 
 export const SOCIAL_MEDIA: SocialMedia[] = [
@@ -14,11 +15,13 @@ export const SOCIAL_MEDIA: SocialMedia[] = [
     name: 'GitHub',
     url: 'https://github.com/nyxsr',
     icon: <FaGithub />,
+    label: "Sahrul's GitHub",
   },
   {
     id: 'linkedin',
     name: 'LinkedIn',
     url: 'https://linkedin.com/in/sahrul-ramdan-2012',
     icon: <FaLinkedin />,
+    label: "Sahrul's LinkedIn",
   },
 ];
