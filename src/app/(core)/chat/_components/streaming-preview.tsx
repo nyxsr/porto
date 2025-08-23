@@ -23,14 +23,14 @@ export default function StreamingPreview({
   }
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       <SpecialMessageRenderer
         showIntro={showIntroduction}
         showSkills={showSkills}
         showResume={showResume}
         showSummary={showSummary}
       />
-      <BubbleChat key="__streaming_draft" message={streamingDraft} role="assistant" />
+      <BubbleChat key='__streaming_draft' message={streamingDraft} role='assistant' />
     </div>
   );
 }

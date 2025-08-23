@@ -1,7 +1,9 @@
 import React from 'react';
-import { Dices } from 'lucide-react';
+import { ArrowUp, Dices } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { SAMPLE_QUESTIONS } from '@/constants/suggestion';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { LoadingDots } from '../../_components/loading-dots';
@@ -50,12 +52,19 @@ export default function ChatInput({
             />
             <div className='flex items-center gap-2'>
               {isProcessing && <LoadingDots />}
-              <button type='button' onClick={getRandomQuestion} className='cursor-pointer px-4'>
+              <button type='button' onClick={getRandomQuestion} className='cursor-pointer px-2'>
                 <Dices />
               </button>
+              <Button
+                type='submit'
+                disabled={isProcessing}
+                className={cn('rounded-full text-black', isProcessing && 'bg-gray-500')}
+              >
+                <ArrowUp />
+              </Button>
             </div>
           </div>
-          <small className='text-muted-foreground'>
+          <small className='text-muted-foreground text-center'>
             AI Generated, it&apos;ll be better if you ask to me directly
           </small>
         </form>

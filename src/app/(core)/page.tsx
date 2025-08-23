@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Dices } from 'lucide-react';
+import { ArrowUp, Dices } from 'lucide-react';
 import { motion } from 'motion/react';
+import { v4 } from 'uuid';
 
 import { generatePalleteOrbColors } from '@/lib/renderer';
+import { cn } from '@/lib/utils';
 import { CompanyIds } from '@/constants/company';
 import { SAMPLE_QUESTIONS, SUGGESTION_ITEMS } from '@/constants/suggestion';
 import { useCompanyStore } from '@/store/company.store';
@@ -34,7 +36,7 @@ export default function CorePage() {
     setIsProcessing(true);
 
     // Generate a new session ID and navigate with the message as a query param
-    const newSid = crypto.randomUUID();
+    const newSid = v4();
     router.push(`/chat/${newSid}?initialMessage=${encodeURIComponent(input)}`);
     setInput('');
     setIsProcessing(false);
@@ -47,20 +49,37 @@ export default function CorePage() {
   };
 
   return (
-    <div className='relative h-full p-4'>
+    <div className='relative h-full md:p-4'>
       <OrbsLayer colors={colors} />
       <BlurredMask />
-      <div className='relative z-30 h-full'>
-        <div className='sticky top-0 left-0 flex items-center justify-end'>
+      <div className='relative z-30 h-[80%] md:h-full'>
+        <div className='sticky top-0 left-0 flex items-center justify-end px-10 pt-10 md:p-0'>
           {/*<CompanySelector />*/}
           <SocialMedias />
         </div>
-        <div className='mx-auto flex h-full max-w-[70%] flex-col items-center justify-center gap-4'>
-          <h1 className='text-4xl font-semibold'>Introducing, Sahrul Ramdan</h1>
-          <p className='text-center text-gray-400'>
+        <div className='mx-auto flex h-full max-w-screen flex-col items-center justify-center gap-4 md:max-w-[70%]'>
+          <motion.h1
+            className='text-center text-4xl font-semibold'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Introducing, Sahrul Ramdan
+          </motion.h1>
+          <motion.p
+            className='text-center text-gray-400'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             Full-Stack Developer who turns tech needs into solutions and keeps teams moving in sync.
-          </p>
-          <motion.div className='flex w-full items-center rounded-4xl bg-[#303030] p-3'>
+          </motion.p>
+          <motion.div
+            className='fixed bottom-10 flex w-[85%] items-center rounded-4xl bg-[#303030] p-3 md:static md:w-full'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <form onSubmit={(e) => handleSubmit(e)} className='w-full'>
               <Input
                 ref={inputRef}
@@ -73,28 +92,46 @@ export default function CorePage() {
             </form>
             <div className='flex items-center gap-2'>
               {isProcessing && <LoadingDots />}
-              <button onClick={getRandomQuestion} className='cursor-pointer px-4'>
+              <button onClick={getRandomQuestion} className='cursor-pointer px-2'>
                 <Dices />
               </button>
+              <Button
+                type='submit'
+                disabled={isProcessing}
+                className={cn('rounded-full text-black', isProcessing && 'bg-gray-500')}
+              >
+                <ArrowUp />
+              </Button>
             </div>
           </motion.div>
-          <div className='flex items-center gap-3'>
-            {SUGGESTION_ITEMS.map((suggest) => (
-              <Button
-                disabled={isProcessing}
-                onClick={() => {
-                  setInput(suggest.prompt);
-                  inputRef.current?.focus();
-                }}
+          <motion.div
+            className='flex max-w-[80%] flex-wrap items-center justify-center gap-3'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            {SUGGESTION_ITEMS.map((suggest, index) => (
+              <motion.div
                 key={suggest.id}
-                variant={'outline'}
-                className='inline-flex cursor-pointer rounded-2xl bg-transparent shadow'
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
               >
-                {suggest.icon}
-                {suggest.label}
-              </Button>
+                <Button
+                  disabled={isProcessing}
+                  onClick={() => {
+                    setInput(suggest.prompt);
+                    inputRef.current?.focus();
+                  }}
+                  variant={'outline'}
+                  className='inline-flex cursor-pointer rounded-2xl bg-transparent shadow'
+                >
+                  {suggest.icon}
+                  {suggest.label}
+                </Button>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

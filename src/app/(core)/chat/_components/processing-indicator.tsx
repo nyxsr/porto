@@ -16,7 +16,7 @@ export default function ProcessingIndicator({
   }
 
   return (
-    <span className="flex items-center justify-start gap-4 italic">
+    <span className='mx-4 flex items-center justify-start gap-4 italic md:mx-0'>
       {processLabel} <LoadingDots />
     </span>
   );

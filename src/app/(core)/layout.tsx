@@ -2,7 +2,7 @@
 
 export default function CoreLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='relative flex h-screen max-h-screen w-screen overflow-hidden'>
+    <div className='relative flex h-[100dvh] max-h-screen w-screen overflow-hidden'>
       {/* <Sidebar /> */}
       <main className='flex-1'>{children}</main>
     </div>

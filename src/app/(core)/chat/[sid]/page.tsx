@@ -11,6 +11,7 @@ import { useChatStreaming } from '@/hooks/useChatStreaming';
 import { useSpecialMessageTypes } from '@/hooks/useSpecialMessageTypes';
 import { useCompanyStore } from '@/store/company.store';
 
+import BubbleChat from '../_components/bubble-chat';
 import ChatError from '../_components/chat-error';
 import ChatInput from '../_components/chat-input';
 import ChatSkeleton from '../_components/chat-skeleton';
@@ -18,7 +19,6 @@ import EmptyChatState from '../_components/empty-chat-state';
 import MessageList from '../_components/message-list';
 import ProcessingIndicator from '../_components/processing-indicator';
 import StreamingPreview from '../_components/streaming-preview';
-import BubbleChat from '../_components/bubble-chat';
 
 export default function ChatPage() {
   const { sid } = useParams<{ sid: string }>();
@@ -103,19 +103,23 @@ export default function ChatPage() {
     <div className='flex h-full w-full flex-col'>
       <div
         ref={messageSectionRef}
-        className='relative z-10 mx-auto mt-6 w-[calc(3.25/4_*_100%)] flex-1 overflow-y-auto px-6 pb-20'
+        className='relative z-10 mx-auto mt-6 flex-1 overflow-y-auto pb-20 md:w-[calc(3.25/4_*_100%)] md:px-6'
       >
         {isLoading ? (
           <ChatSkeleton />
         ) : isError ? (
           <ChatError onRetry={() => refetch()} />
-        ) : (messages && messages.length > 0) || isProcessing || streamingDraft || isProcessingInitialMessage ? (
+        ) : (messages && messages.length > 0) ||
+          isProcessing ||
+          streamingDraft ||
+          isProcessingInitialMessage ? (
           <div className='space-y-4'>
-            {pendingInitialMessage && (
-              <BubbleChat message={pendingInitialMessage} role="user" />
-            )}
+            {pendingInitialMessage && <BubbleChat message={pendingInitialMessage} role='user' />}
             {messages && messages.length > 0 && <MessageList messages={messages} />}
-            <ProcessingIndicator isProcessing={isProcessing || isProcessingInitialMessage} processLabel={processLabel} />
+            <ProcessingIndicator
+              isProcessing={isProcessing || isProcessingInitialMessage}
+              processLabel={processLabel}
+            />
             <StreamingPreview
               streamingDraft={streamingDraft}
               showIntroduction={showIntroduction}

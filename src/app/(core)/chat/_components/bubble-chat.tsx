@@ -38,8 +38,8 @@ export default function BubbleChat({
   };
 
   return (
-    <div className={cn('flex items-center', roleStyles(), rootClassName)}>
-      <div className={cn('prose max-w-2/3 p-6 **:text-white', contentClass, className)}>
+    <div className={cn('mx-4 flex items-center md:mx-0', roleStyles(), rootClassName)}>
+      <div className={cn('prose p-6 **:text-white md:max-w-2/3', contentClass, className)}>
         <Markdown>{message}</Markdown>
       </div>
     </div>
