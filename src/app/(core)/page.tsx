@@ -75,12 +75,15 @@ export default function CorePage() {
             Full-Stack Developer who turns tech needs into solutions and keeps teams moving in sync.
           </motion.p>
           <motion.div
-            className='fixed bottom-10 flex w-[85%] items-center rounded-4xl bg-[#303030] p-3 md:static md:w-full'
+            className='fixed bottom-10 w-[85%] rounded-4xl bg-[#303030] p-3 md:static md:w-full'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <form onSubmit={(e) => handleSubmit(e)} className='w-full'>
+            <form
+              onSubmit={(e) => handleSubmit(e)}
+              className='flex w-full items-center justify-between'
+            >
               <Input
                 aria-label='Ask anything about me...'
                 ref={inputRef}
@@ -90,25 +93,29 @@ export default function CorePage() {
                 className='border-none bg-transparent outline-none focus-visible:ring-0'
                 placeholder='Ask anything about me...'
               />
+              <div className='flex items-center gap-2'>
+                {isProcessing && <LoadingDots />}
+                <button
+                  type='button'
+                  aria-label='Random Question'
+                  onClick={getRandomQuestion}
+                  className='cursor-pointer px-2'
+                >
+                  <Dices />
+                </button>
+                <Button
+                  aria-label='Submit'
+                  type='submit'
+                  disabled={isProcessing}
+                  className={cn(
+                    'cursor-pointer rounded-full text-black',
+                    isProcessing && 'bg-gray-500',
+                  )}
+                >
+                  <ArrowUp />
+                </Button>
+              </div>
             </form>
-            <div className='flex items-center gap-2'>
-              {isProcessing && <LoadingDots />}
-              <button
-                aria-label='Random Question'
-                onClick={getRandomQuestion}
-                className='cursor-pointer px-2'
-              >
-                <Dices />
-              </button>
-              <Button
-                aria-label='Submit'
-                type='submit'
-                disabled={isProcessing}
-                className={cn('rounded-full text-black', isProcessing && 'bg-gray-500')}
-              >
-                <ArrowUp />
-              </Button>
-            </div>
           </motion.div>
           <motion.div
             className='flex max-w-[80%] flex-wrap items-center justify-center gap-3'

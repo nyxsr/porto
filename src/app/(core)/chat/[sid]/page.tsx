@@ -103,7 +103,7 @@ export default function ChatPage() {
     <div className='flex h-full w-full flex-col'>
       <div
         ref={messageSectionRef}
-        className='relative z-10 mx-auto mt-6 flex-1 overflow-y-auto pb-20 md:w-[calc(3.25/4_*_100%)] md:px-6'
+        className='relative z-10 mt-6 flex-1 overflow-y-auto pb-20 md:mx-auto md:w-[calc(3.25/4_*_100%)] md:px-6'
       >
         {isLoading ? (
           <ChatSkeleton />
